@@ -16,3 +16,7 @@
 - Subida y revisión de canciones antes de su publicación.
 - Reproducción de audio vía streaming desde Firebase Storage.
 - Creación de playlists, favoritos y sistema de roles (`USER`, `ARTIST`, `ADMIN`).
+
+### 🚧 Arquitectura:
+
+![spring tunes.jpg](spring%20tunes.jpg)

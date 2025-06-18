@@ -1,10 +1,10 @@
 
 -- 🔄 Reset de todas las tablas en orden inverso de dependencia
-DROP TABLE IF EXISTS playlist_song CASCADE;
-DROP TABLE IF EXISTS favorite_song CASCADE;
+DROP TABLE IF EXISTS playlist_track CASCADE;
+DROP TABLE IF EXISTS favorite_track CASCADE;
 DROP TABLE IF EXISTS playlist CASCADE;
-DROP TABLE IF EXISTS song_genre CASCADE;
-DROP TABLE IF EXISTS song CASCADE;
+DROP TABLE IF EXISTS track_genre CASCADE;
+DROP TABLE IF EXISTS track CASCADE;
 DROP TABLE IF EXISTS album CASCADE;
 DROP TABLE IF EXISTS genre CASCADE;
 DROP TABLE IF EXISTS artist_claim_request CASCADE;
@@ -63,59 +63,59 @@ CREATE TABLE album (
     CONSTRAINT fk_album_artist FOREIGN KEY (artist_profile_id) REFERENCES artist_profile(id) ON DELETE CASCADE
 );
 
--- ✅ Tabla: song
-CREATE TABLE song (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    album_id UUID,
-    title VARCHAR NOT NULL,
-    duration INTEGER NOT NULL,
-    audio_url TEXT NOT NULL,
-    cover_url TEXT,
-    release_date TIMESTAMP,
-    artist_profile_id UUID NOT NULL,
-    status VARCHAR NOT NULL CHECK (status IN ('PENDING_REVIEW', 'APPROVED', 'BANNED')),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_song_album FOREIGN KEY (album_id) REFERENCES album(id) ON DELETE SET NULL,
-    CONSTRAINT fk_song_artist FOREIGN KEY (artist_profile_id) REFERENCES artist_profile(id) ON DELETE CASCADE
-);
+-- ✅ Tabla: track
+CREATE TABLE track (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      album_id UUID,
+      title VARCHAR NOT NULL,
+      duration INTEGER NOT NULL,
+      audio_url TEXT NOT NULL,
+      cover_url TEXT,
+      release_date TIMESTAMP,
+      artist_profile_id UUID NOT NULL,
+      status VARCHAR NOT NULL CHECK (status IN ('PENDING_REVIEW', 'APPROVED', 'BANNED', 'REJECTED')),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT fk_track_album FOREIGN KEY (album_id) REFERENCES album(id) ON DELETE SET NULL,
+      CONSTRAINT fk_track_artist FOREIGN KEY (artist_profile_id) REFERENCES artist_profile(id) ON DELETE CASCADE
+  );
 
--- ✅ Tabla: song_genre
-CREATE TABLE song_genre (
-    song_id UUID NOT NULL,
-    genre_id INTEGER NOT NULL,
-    PRIMARY KEY (song_id, genre_id),
-    CONSTRAINT fk_sg_song FOREIGN KEY (song_id) REFERENCES song(id) ON DELETE CASCADE,
-    CONSTRAINT fk_sg_genre FOREIGN KEY (genre_id) REFERENCES genre(id) ON DELETE CASCADE
-);
+  -- ✅ Tabla: track_genre
+  CREATE TABLE track_genre (
+      track_id UUID NOT NULL,
+      genre_id INTEGER NOT NULL,
+      PRIMARY KEY (track_id, genre_id),
+      CONSTRAINT fk_sg_track FOREIGN KEY (track_id) REFERENCES track(id) ON DELETE CASCADE,
+      CONSTRAINT fk_sg_genre FOREIGN KEY (genre_id) REFERENCES genre(id) ON DELETE CASCADE
+  );
 
--- ✅ Tabla: playlist
-CREATE TABLE playlist (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR NOT NULL,
-    description TEXT,
-    is_public BOOLEAN DEFAULT FALSE,
-    user_id VARCHAR NOT NULL,
-    CONSTRAINT fk_playlist_user FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE
-);
+  -- ✅ Tabla: playlist
+  CREATE TABLE playlist (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      name VARCHAR NOT NULL,
+      description TEXT,
+      is_public BOOLEAN DEFAULT FALSE,
+      user_id VARCHAR NOT NULL,
+      CONSTRAINT fk_playlist_user FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE
+  );
 
--- ✅ Tabla: playlist_song
-CREATE TABLE playlist_song (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    playlist_id UUID NOT NULL,
-    song_id UUID NOT NULL,
-    order_index INTEGER NOT NULL,
-    CONSTRAINT fk_pl_song_playlist FOREIGN KEY (playlist_id) REFERENCES playlist(id) ON DELETE CASCADE,
-    CONSTRAINT fk_pl_song_song FOREIGN KEY (song_id) REFERENCES song(id) ON DELETE CASCADE
-);
+  -- ✅ Tabla: playlist_track
+  CREATE TABLE playlist_track (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      playlist_id UUID NOT NULL,
+      track_id UUID NOT NULL,
+      order_index INTEGER NOT NULL,
+      CONSTRAINT fk_pl_track_playlist FOREIGN KEY (playlist_id) REFERENCES playlist(id) ON DELETE CASCADE,
+      CONSTRAINT fk_pl_track_track FOREIGN KEY (track_id) REFERENCES track(id) ON DELETE CASCADE
+  );
 
--- ✅ Tabla: favorite_song
-CREATE TABLE favorite_song (
-    user_id VARCHAR NOT NULL,
-    song_id UUID NOT NULL,
-    PRIMARY KEY (user_id, song_id),
-    CONSTRAINT fk_fav_user FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE,
-    CONSTRAINT fk_fav_song FOREIGN KEY (song_id) REFERENCES song(id) ON DELETE CASCADE
-);
+  -- ✅ Tabla: favorite_track
+  CREATE TABLE favorite_track (
+      user_id VARCHAR NOT NULL,
+      track_id UUID NOT NULL,
+      PRIMARY KEY (user_id, track_id),
+      CONSTRAINT fk_fav_user FOREIGN KEY (user_id) REFERENCES "user"(id) ON DELETE CASCADE,
+      CONSTRAINT fk_fav_track FOREIGN KEY (track_id) REFERENCES track(id) ON DELETE CASCADE
+  );
 
 -- 🔧 Activar extensión pgcrypto si no está activa (para gen_random_uuid)
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";

@@ -1,4 +1,4 @@
-package com.edwindev.springtunes_api.modules.music.genre;
+package com.edwindev.springtunes_api.modules.music.genre.repository;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

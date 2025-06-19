@@ -13,6 +13,8 @@ public enum ErrorCode {
     FIREBASE_ERROR("AUTH_005", "There was an error with Firebase."),
     FORM_VALIDATION("FORM_001", "Invalid form data."),
     VALIDATION_ERROR("FORM_002", "Invalid data."),
+    UNIQUE_ERROR("FORM_409", "Value must be unique."),
+    INVALID_VALUE("FORM_422", "Value is invalid."),
     NOT_FOUND("SYS_404", "Resource not found."),
     INTERNAL_ERROR("SYS_000", "An unexpected error occurred.");
 

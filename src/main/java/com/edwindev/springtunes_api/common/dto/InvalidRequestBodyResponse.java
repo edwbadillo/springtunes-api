@@ -7,6 +7,6 @@ import java.util.List;
  */
 public record InvalidRequestBodyResponse(
         String message,
-        List<InvalidField> errors
+        List<InvalidData> errors
 ) {
 }

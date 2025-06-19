@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 public class ValidationErrorResponse extends ErrorResponse {
-    private final InvalidField error;
+    private final InvalidData error;
 
-    public ValidationErrorResponse(InvalidField error) {
+    public ValidationErrorResponse(InvalidData error) {
         super(ErrorCode.VALIDATION_ERROR, ErrorCode.FORM_VALIDATION.message());
         this.error = error;
     }

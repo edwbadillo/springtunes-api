@@ -1,7 +1,7 @@
 package com.edwindev.springtunes_api.config;
 
 import com.edwindev.springtunes_api.common.dto.ErrorResponse;
-import com.edwindev.springtunes_api.common.dto.InvalidField;
+import com.edwindev.springtunes_api.common.dto.InvalidData;
 import com.edwindev.springtunes_api.common.dto.ValidationErrorResponse;
 import com.edwindev.springtunes_api.common.dto.ValidationErrorsResponse;
 import com.edwindev.springtunes_api.common.exception.AuthException;
@@ -28,10 +28,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        List<InvalidField> invalidFields = new ArrayList<>();
+        List<InvalidData> invalidFields = new ArrayList<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             FieldError fieldError = (FieldError) error;
-            invalidFields.add(new InvalidField(
+            invalidFields.add(new InvalidData(
                     fieldError.getCode(),
                     fieldError.getDefaultMessage(),
                     fieldError.getField(),
@@ -49,14 +49,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(InvalidDataException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ValidationErrorResponse handleInvalidDataException(InvalidDataException e) {
-        return new ValidationErrorResponse(new InvalidField(
-                e.getType(),
-                e.getMessage(),
-                e.getField(),
-                e.getValue()
-        ));
+        return new ValidationErrorResponse(e.getErrorData());
     }
 
     @ExceptionHandler(AuthException.class)

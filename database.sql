@@ -24,7 +24,7 @@ CREATE TABLE "user" (
 CREATE TABLE artist_profile (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     user_id VARCHAR UNIQUE,
-    artist_name VARCHAR NOT NULL,
+    artist_name VARCHAR NOT NULL UNIQUE,
     bio TEXT,
     status VARCHAR NOT NULL CHECK (status IN ('PENDING', 'APPROVED', 'REJECTED', 'DISABLED')),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

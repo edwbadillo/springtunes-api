@@ -1,4 +1,4 @@
-package com.edwindev.springtunes_api.modules.artist.profile;
+package com.edwindev.springtunes_api.modules.artist.profile.repository;
 
 import com.edwindev.springtunes_api.modules.user.User;
 import jakarta.persistence.*;
@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -22,7 +23,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Artist {
+public class ArtistProfile {
     @Id
     @GeneratedValue
     private UUID id;
@@ -40,6 +41,15 @@ public class Artist {
 
     @CreatedDate
     private LocalDateTime createdAt;
+
+    /**
+     * Check if the artist profile has a user.
+     *
+     * @return true if the artist profile has a user, false otherwise.
+     */
+    public boolean hasUser() {
+        return Objects.nonNull(user) && Objects.nonNull(user.getId());
+    }
 
     /**
      * The status of the artist profile.

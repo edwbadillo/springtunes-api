@@ -1,5 +1,7 @@
 package com.edwindev.springtunes_api.modules.artist.profile.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.UUID;
 
 /**
@@ -11,6 +13,8 @@ import java.util.UUID;
  */
 public record ArtistStatusRequest(
         UUID id,
+
+        @NotBlank
         String status
 ) {
 }

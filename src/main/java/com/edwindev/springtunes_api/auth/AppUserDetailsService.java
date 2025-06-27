@@ -19,13 +19,13 @@ public class AppUserDetailsService implements UserDetailsService {
     /**
      * Loads the user details from the database, if not found, then creates a new user.
      *
-     * @param uid the username identifying the user whose data is required.
+     * @param userId the username identifying the user whose data is required.
      * @return the user details
      * @throws UsernameNotFoundException if the user is not found and no user could be created.
      */
     @Override
-    public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
-        return userRepository.findById(uid)
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        return userRepository.findById(userId)
                 .map(AppUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }

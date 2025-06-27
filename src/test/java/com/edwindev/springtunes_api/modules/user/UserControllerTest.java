@@ -27,7 +27,7 @@ public class UserControllerTest {
     void shouldReturnAuthenticatedUserData() throws Exception {
         // Arrange
         AuthenticatedUserData userData = new AuthenticatedUserData(
-                "firebase-uid",
+                "xyz",
                 "Test User",
                 "test@example.com",
                 null,
@@ -39,7 +39,7 @@ public class UserControllerTest {
         // Act & Assert
         mockMvc.perform(get("/api/v1/users/me"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("firebase-uid"))
+                .andExpect(jsonPath("$.id").value("xyz"))
                 .andExpect(jsonPath("$.displayName").value("Test User"))
                 .andExpect(jsonPath("$.email").value("test@example.com"))
                 .andExpect(jsonPath("$.role").value("USER"));

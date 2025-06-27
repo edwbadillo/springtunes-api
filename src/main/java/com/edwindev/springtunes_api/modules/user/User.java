@@ -16,7 +16,7 @@ import lombok.*;
 public class User {
 
     @Id
-    private String id; // UID de Firebase
+    private String id; // UUID de AWS Cognito User
 
     private String displayName;
 

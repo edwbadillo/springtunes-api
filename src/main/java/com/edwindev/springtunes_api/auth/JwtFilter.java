@@ -1,11 +1,7 @@
 package com.edwindev.springtunes_api.auth;
 
-import com.edwindev.springtunes_api.common.exception.AuthException;
-import com.edwindev.springtunes_api.common.exception.ErrorCode;
-import com.edwindev.springtunes_api.config.security.FirebaseAuthService;
 import com.edwindev.springtunes_api.modules.user.UserService;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.FirebaseToken;
+import com.edwindev.springtunes_api.modules.user.dto.UserCreateData;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,17 +12,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
-    private final FirebaseAuthService firebaseAuth;
     private final AppUserDetailsService userDetailsService;
     private final UserService userService;
 
@@ -35,34 +30,21 @@ public class JwtFilter extends OncePerRequestFilter {
                                  HttpServletResponse response,
                                  FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
-
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String idToken = authHeader.substring(7);
-            FirebaseToken decodedToken = null;
-            try {
-                decodedToken = firebaseAuth.verifyToken(idToken);
-                if (!decodedToken.isEmailVerified())
-                    throw new AuthException(ErrorCode.EMAIL_NOT_VERIFIED);
-
-                String uid = decodedToken.getUid();
-
-                UserDetails userDetails = userDetailsService.loadUserByUsername(uid);
-                setAuthenticated(userDetails);
-            } catch (FirebaseAuthException e) {
-                String message = e.getErrorCode().name() + " - " + e.getMessage();
-                log.error(message);
-                throw new AuthException(ErrorCode.FIREBASE_ERROR, message);
-            } catch (UsernameNotFoundException e) {
-                log.warn("User is verified but not found in the database, creating new user...");
-                createUserForVerifiedUser(decodedToken);
-            }
-        }
-
+        String token = getBearerToken(authHeader);
         filterChain.doFilter(request, response);
     }
 
-    private void createUserForVerifiedUser(FirebaseToken decodedToken) {
-        AppUserDetails createdUser = userService.createVerifiedUser(decodedToken);
+    private String getBearerToken(String header) {
+        if (Objects.nonNull(header) && header.startsWith("Bearer ")) {
+            return header.substring(7);
+        }
+        return null;
+    }
+
+
+    private void createUserForVerifiedUser() {
+        UserCreateData data = new UserCreateData("test", "test");
+        AppUserDetails createdUser = userService.createVerifiedUser(data);
         setAuthenticated(createdUser);
     }
 

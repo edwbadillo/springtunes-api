@@ -3,9 +3,9 @@ package com.edwindev.springtunes_api.modules.user;
 import com.edwindev.springtunes_api.auth.AppUserDetails;
 import com.edwindev.springtunes_api.common.exception.ErrorCode;
 import com.edwindev.springtunes_api.modules.user.dto.AuthenticatedUserData;
+import com.edwindev.springtunes_api.modules.user.dto.UserCreateData;
 import com.edwindev.springtunes_api.modules.user.dto.UserMapper;
 import com.edwindev.springtunes_api.modules.user.exception.UserCreateException;
-import com.google.firebase.auth.FirebaseToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,16 +23,14 @@ public class UserServiceImpl implements UserService {
     private final UserMapper authUserMapper;
 
     @Override
-    public AppUserDetails createVerifiedUser(FirebaseToken firebaseToken) {
-        firebaseToken.getUid();
-        String email = firebaseToken.getEmail();
-        if (userRepository.existsByEmailIgnoreCase(email))
+    public AppUserDetails createVerifiedUser(UserCreateData data) {
+        if (userRepository.existsByEmailIgnoreCase(data.email()))
             throw new UserCreateException(ErrorCode.CREATE_USER, "User already exists.");
 
         User user = User.builder()
-                .id(firebaseToken.getUid())
-                .displayName(firebaseToken.getEmail())
-                .email(email)
+                .id(data.userID())
+                .displayName(data.email())
+                .email(data.email())
                 .role(User.Role.USER)
                 .build();
         user = userRepository.save(user);

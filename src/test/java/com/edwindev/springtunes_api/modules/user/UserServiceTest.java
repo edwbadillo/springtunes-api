@@ -3,9 +3,9 @@ package com.edwindev.springtunes_api.modules.user;
 import com.edwindev.springtunes_api.auth.AppUserDetails;
 import com.edwindev.springtunes_api.common.exception.ErrorCode;
 import com.edwindev.springtunes_api.modules.user.dto.AuthenticatedUserData;
+import com.edwindev.springtunes_api.modules.user.dto.UserCreateData;
 import com.edwindev.springtunes_api.modules.user.dto.UserMapper;
 import com.edwindev.springtunes_api.modules.user.exception.UserCreateException;
-import com.google.firebase.auth.FirebaseToken;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,9 +38,10 @@ class UserServiceTest {
         String uid = "abc123";
         String email = "test@example.com";
 
-        FirebaseToken token = mock(FirebaseToken.class);
-        when(token.getUid()).thenReturn(uid);
-        when(token.getEmail()).thenReturn(email);
+        UserCreateData token = UserCreateData.builder()
+                .userID(uid)
+                .email(email)
+                .build();
         when(userRepository.existsByEmailIgnoreCase(email)).thenReturn(false);
 
         User userToSave = User.builder()
@@ -69,8 +70,9 @@ class UserServiceTest {
     void shouldThrowExceptionWhenUserAlreadyExists() {
         // Arrange
         String email = "existing@example.com";
-        FirebaseToken token = mock(FirebaseToken.class);
-        when(token.getEmail()).thenReturn(email);
+        UserCreateData token = UserCreateData.builder()
+                .email(email)
+                .build();
         when(userRepository.existsByEmailIgnoreCase(email)).thenReturn(true);
 
         // Act & Assert
@@ -88,7 +90,7 @@ class UserServiceTest {
     void shouldReturnAuthenticatedUserData_whenUserIsInContext() {
         // Arrange
         User user = User.builder()
-                .id("firebase-uid")
+                .id("xyz")
                 .displayName("Test User")
                 .email("test@example.com")
                 .role(User.Role.USER)
@@ -109,7 +111,7 @@ class UserServiceTest {
 
         // Assert
         assertThat(result).isNotNull();
-        assertThat(result.id()).isEqualTo("firebase-uid");
+        assertThat(result.id()).isEqualTo("xyz");
         assertThat(result.email()).isEqualTo("test@example.com");
         assertThat(result.role()).isEqualTo("USER");
     }

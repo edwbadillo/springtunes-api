@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS "user" CASCADE;
 
 -- ✅ Tabla: user
 CREATE TABLE "user" (
-    id VARCHAR PRIMARY KEY, -- Firebase UID
+    id VARCHAR PRIMARY KEY, -- AWS Cognito user UUID
     display_name VARCHAR NOT NULL,
     email VARCHAR NOT NULL UNIQUE,
     profile_picture_url TEXT,

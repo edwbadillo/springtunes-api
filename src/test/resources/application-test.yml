@@ -13,23 +13,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  mail:
-    host: dummy
-    port: 1025
-    username: test
-    password: test
-    protocol: smtp
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
 
 server:
   port: 8080
-
-app:
-  mail:
-    sender-email: myapp@localhost.com

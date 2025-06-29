@@ -109,7 +109,7 @@ public class ArtistProfileServiceTest {
         ArtistUpdateRequest request = new ArtistUpdateRequest("Nueva bio", "https://cdn.com/profile.png");
 
         User user = User.builder()
-                .id("firebase-uid")
+                .id("xyz")
                 .email("artist@email.com")
                 .displayName("Artist")
                 .profilePictureUrl("https://old-url.com/profile.png")

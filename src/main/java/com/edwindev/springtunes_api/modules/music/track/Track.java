@@ -1,6 +1,6 @@
 package com.edwindev.springtunes_api.modules.music.track;
 
-import com.edwindev.springtunes_api.modules.artist.profile.Artist;
+import com.edwindev.springtunes_api.modules.artist.profile.repository.ArtistProfile;
 import com.edwindev.springtunes_api.modules.music.album.Album;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,7 +43,7 @@ public class Track {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "artist_profile_id", nullable = false, foreignKey = @ForeignKey(name = "fk_track_artist"))
-    private Artist artist;
+    private ArtistProfile artist;
 
     @Enumerated(EnumType.STRING)
     private Status status;

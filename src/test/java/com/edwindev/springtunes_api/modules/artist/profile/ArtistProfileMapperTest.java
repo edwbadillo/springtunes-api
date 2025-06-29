@@ -23,7 +23,7 @@ public class ArtistProfileMapperTest {
     void shouldMapArtistProfileToResponse_withUser() {
         // given
         User user = User.builder()
-                .id("firebase-uid")
+                .id("xyz")
                 .displayName("Edwin")
                 .email("edwin@example.com")
                 .profilePictureUrl("http://localhost/profile-test.jpg")

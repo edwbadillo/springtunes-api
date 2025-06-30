@@ -48,7 +48,7 @@ public class ArtistProfileRepositoryTest {
     void shouldCreateArtistProfileWithUser() {
         // given
         User user = User.builder()
-                .id("firebase-uid-123")
+                .id("xyz")
                 .displayName("Edwin")
                 .email("edwin@example.com")
                 .role(User.Role.ARTIST)
@@ -68,7 +68,7 @@ public class ArtistProfileRepositoryTest {
         assertThat(profile.getId()).isNotNull();
         assertThat(profile.getArtistName()).isEqualTo("Edwin Beats");
         assertThat(profile.getUser()).isNotNull();
-        assertThat(profile.getUser().getId()).isEqualTo("firebase-uid-123");
+        assertThat(profile.getUser().getId()).isEqualTo("xyz");
         assertThat(profile.hasUser()).isTrue();
     }
 

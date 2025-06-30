@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Filter that sets the authentication in the SecurityContextHolder
@@ -41,7 +42,7 @@ public class SetAuthenticationFilter extends OncePerRequestFilter {
 
     private void checkAuthentication() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated())
+        if (Objects.isNull(authentication) || !authentication.isAuthenticated())
             return;
         if (authentication instanceof JwtAuthenticationToken jwtAuth)
             getOrCreateUser(jwtAuth);

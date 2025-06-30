@@ -1,6 +1,6 @@
 package com.edwindev.springtunes_api.modules.music.track;
 
-import com.edwindev.springtunes_api.modules.music.genre.Genre;
+import com.edwindev.springtunes_api.modules.music.genre.repository.Genre;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

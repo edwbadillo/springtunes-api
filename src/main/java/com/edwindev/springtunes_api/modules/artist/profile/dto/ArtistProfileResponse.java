@@ -12,7 +12,7 @@ import java.util.UUID;
  * @param artistName        the name of the artist
  * @param bio               the bio of the artist
  * @param status            the status of the artist profile
- * @param profilePictureUrl the URL of the profile picture (Firebase Storage)
+ * @param profilePictureUrl the URL of the profile picture
  * @param hasUser           whether the artist profile has a user (has been claimed)
  * @param createdAt         the creation date of the artist profile
  */

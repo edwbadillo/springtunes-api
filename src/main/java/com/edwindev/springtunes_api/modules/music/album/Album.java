@@ -1,6 +1,6 @@
 package com.edwindev.springtunes_api.modules.music.album;
 
-import com.edwindev.springtunes_api.modules.artist.profile.Artist;
+import com.edwindev.springtunes_api.modules.artist.profile.repository.ArtistProfile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +35,7 @@ public class Album {
 
     @ManyToOne
     @JoinColumn(name = "artist_profile_id", foreignKey = @ForeignKey(name = "fk_album_artist"))
-    private Artist artist;
+    private ArtistProfile artist;
 
     /**
      * The album type.

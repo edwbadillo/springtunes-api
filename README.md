@@ -25,7 +25,7 @@
 ## 📝 Checklist
 Revisar las issues de GitHub para ver las tareas pendientes.
 
-### 🚧 Arquitectura:
+### 🚧 Arquitectura Actual:
 
 ![spring tunes.jpg](spring_tunes.jpg)
 
